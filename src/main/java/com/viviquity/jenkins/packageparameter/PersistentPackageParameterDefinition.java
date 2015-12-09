@@ -1,25 +1,22 @@
 package com.viviquity.jenkins.packageparameter;
 
+import com.viviquity.jenkins.packageparameter.aws.AwsClientReader;
+import com.viviquity.jenkins.packageparameter.aws.FilterableMap;
 import hudson.Extension;
 import hudson.model.ParameterValue;
 import hudson.model.SimpleParameterDefinition;
 import hudson.model.StringParameterValue;
 import hudson.util.FormValidation;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.xml.bind.JAXBException;
-
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.export.Exported;
 
-import com.viviquity.jenkins.packageparameter.aws.AwsClientReader;
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * yum-parameter
@@ -39,10 +36,12 @@ public class PersistentPackageParameterDefinition extends SimpleParameterDefinit
     private final String bucketName;
     private final String repoPath;
     private final String repositoryType;
+    private final String projectName;
     
     /**
      * Default constructor
      * @param name the name of the parameter. This will passed to the build as a variable
+     * @param projectName the project name to filter params by project name
      * @param description what is the description that the user has supplied for the parameter
      * @param useAwsKeys the boolean flag, that tells us if we need to supply authentication when calling S3.
      * @param awsAccessKeyId the access key, if required.
@@ -53,14 +52,15 @@ public class PersistentPackageParameterDefinition extends SimpleParameterDefinit
      */
     @DataBoundConstructor
     public PersistentPackageParameterDefinition(String name, String description, boolean useAwsKeys, String awsAccessKeyId, String awsSecretAccessKey,
-                                            String bucketName, String repoPath, String repositoryType) {
+                                            String bucketName, String repoPath, String repositoryType, String projectName) {
         super(name, description);
         this.useAwsKeys = useAwsKeys;
         this.awsAccessKeyId = awsAccessKeyId;
         this.awsSecretAccessKey = awsSecretAccessKey;
         this.bucketName = bucketName;
         this.repoPath = repoPath;
-        this.repositoryType = repositoryType; 
+        this.repositoryType = repositoryType;
+        this.projectName = projectName;
     }
 
 
@@ -113,6 +113,10 @@ public class PersistentPackageParameterDefinition extends SimpleParameterDefinit
             builder.withAwsAccessKeys(awsAccessKeyId, awsSecretAccessKey);
         }
         final AwsClientReader reader = builder.build();
+        Map<String, String> packageMap = reader.getPackageMap(bucketName, repoPath);
+        if (!this.projectName.isEmpty()) {
+            return new FilterableMap(packageMap).filterBy(projectName);
+        }
         return reader.getPackageMap(bucketName, repoPath);
     }
 
@@ -154,6 +158,14 @@ public class PersistentPackageParameterDefinition extends SimpleParameterDefinit
      */
     public String getRepoPath() {
         return repoPath;
+    }
+
+    /**
+     * Parameter for retrieving the project name in the config form
+     * @return the project name to be used as filter on project versions
+     */
+    public String getProjectName() {
+        return projectName;
     }
 
     /**
