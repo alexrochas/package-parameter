@@ -17,7 +17,7 @@
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
 		<version>1.454</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<groupId>com.viviquity.jenkins</groupId>
 	<artifactId>package-parameter</artifactId>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.7</version>
+			<version>1.7.36</version>
 		</dependency>
 		<dependency>
 			<groupId>com.amazonaws</groupId>
