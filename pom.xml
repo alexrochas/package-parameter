@@ -17,7 +17,7 @@
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
 		<version>1.454</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<groupId>com.viviquity.jenkins</groupId>
 	<artifactId>package-parameter</artifactId>
@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.3</version>
+			<version>4.5.14</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
