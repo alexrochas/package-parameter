@@ -17,7 +17,7 @@
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
 		<version>1.454</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<groupId>com.viviquity.jenkins</groupId>
 	<artifactId>package-parameter</artifactId>
@@ -83,7 +83,7 @@
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.8.7</version>
+			<version>3.50.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
